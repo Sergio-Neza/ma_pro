@@ -1,6 +1,6 @@
 //Maya ASCII 2020 scene
 //Name: sphere.ma
-//Last modified: Sat, Feb 13, 2021 05:21:18 PM
+//Last modified: Sat, Feb 13, 2021 05:32:28 PM
 //Codeset: 1252
 requires maya "2020";
 requires "mtoa" "4.0.0";
@@ -10,7 +10,7 @@ fileInfo "product" "Maya 2020";
 fileInfo "version" "2020";
 fileInfo "cutIdentifier" "201911140446-42a737a01c";
 fileInfo "osv" "Microsoft Windows 10 Technical Preview  (Build 18363)\n";
-fileInfo "UUID" "70D8992D-4B5B-147E-32BB-97AD099FE07C";
+fileInfo "UUID" "B9CE119D-424A-C25E-FCA7-40AC4EA076BF";
 createNode transform -s -n "persp";
 	rename -uid "EE0DBABD-446B-2E86-44FF-5FAA7555B7E1";
 	setAttr ".v" no;
@@ -89,6 +89,20 @@ createNode mesh -n "pSphereShape1" -p "pSphere1";
 	setAttr ".covm[0]"  0 1 1;
 	setAttr ".cdvm[0]"  0 1 1;
 	setAttr ".ai_translator" -type "string" "polymesh";
+createNode transform -n "pCube1";
+	rename -uid "AD135931-44E0-C09A-9DDF-72806D0779AA";
+	setAttr ".t" -type "double3" -3.7206562687362146 0 0 ;
+createNode mesh -n "pCubeShape1" -p "pCube1";
+	rename -uid "BC80EA6D-44D3-ADD0-1E79-0DA82C013E61";
+	setAttr -k off ".v";
+	setAttr ".vir" yes;
+	setAttr ".vif" yes;
+	setAttr ".uvst[0].uvsn" -type "string" "map1";
+	setAttr ".cuvs" -type "string" "map1";
+	setAttr ".dcc" -type "string" "Ambient+Diffuse";
+	setAttr ".covm[0]"  0 1 1;
+	setAttr ".cdvm[0]"  0 1 1;
+	setAttr ".ai_translator" -type "string" "polymesh";
 createNode lightLinker -s -n "lightLinker1";
 	rename -uid "081891FF-43F5-DDEE-1817-F39406AE4EC4";
 	setAttr -s 2 ".lnk";
@@ -155,6 +169,9 @@ createNode script -n "sceneConfigurationScriptNode";
 	rename -uid "B042E840-495E-61E5-4C1E-9F9FA7D7CD09";
 	setAttr ".b" -type "string" "playbackOptions -min 1 -max 120 -ast 1 -aet 200 ";
 	setAttr ".st" 6;
+createNode polyCube -n "polyCube1";
+	rename -uid "E19786BB-4EB5-F323-C028-21B6AEADB5A8";
+	setAttr ".cuv" 4;
 select -ne :time1;
 	setAttr ".o" 1;
 	setAttr ".unw" 1;
@@ -173,6 +190,7 @@ select -ne :postProcessList1;
 	setAttr -s 2 ".p";
 select -ne :defaultRenderingList1;
 select -ne :initialShadingGroup;
+	setAttr -s 2 ".dsm";
 	setAttr ".ro" yes;
 select -ne :initialParticleSE;
 	setAttr ".ro" yes;
@@ -188,6 +206,7 @@ select -ne :hardwareRenderGlobals;
 select -ne :ikSystem;
 	setAttr -s 4 ".sol";
 connectAttr "polySphere1.out" "pSphereShape1.i";
+connectAttr "polyCube1.out" "pCubeShape1.i";
 relationship "link" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
 relationship "link" ":lightLinker1" ":initialParticleSE.message" ":defaultLightSet.message";
 relationship "shadowLink" ":lightLinker1" ":initialShadingGroup.message" ":defaultLightSet.message";
@@ -196,4 +215,5 @@ connectAttr "layerManager.dli[0]" "defaultLayer.id";
 connectAttr "renderLayerManager.rlmi[0]" "defaultRenderLayer.rlid";
 connectAttr "defaultRenderLayer.msg" ":defaultRenderingList1.r" -na;
 connectAttr "pSphereShape1.iog" ":initialShadingGroup.dsm" -na;
+connectAttr "pCubeShape1.iog" ":initialShadingGroup.dsm" -na;
 // End of sphere.ma
